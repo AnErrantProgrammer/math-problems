@@ -75,22 +75,21 @@
         padding: 20px;
       }
 
-      #percentage{
-          position: absolute;
-          top:0;
-          left:0;
-          opacity: 0.05;
+      #percentage {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0.05;
       }
 
-      #percentage:hover{
-          
-          opacity: 1;
+      #percentage:hover {
+        opacity: 1;
       }
     </style>
   </head>
   <body>
     <div id="app" v-bind:style="{ backgroundColor: color}">
-        <div id="percentage">{{right}}/{{wrong}}</div>
+      <div id="percentage">{{right}}/{{wrong}}</div>
       <div id="type">
         <div class="number" v-on:click="changeOperator">{{operator}}</div>
         <div class="number" v-on:click="incrementMainVal">{{main}}</div>
@@ -100,7 +99,7 @@
         <div id="operator">{{ operator }}</div>
         <div id="second">{{ second }}</div>
         <div id="equal">=</div>
-        <div id="answer"><span v-if="revealed">{{ answer }}</span></div>
+        <div id="answer" v-on:click="clearAnswer"><span>{{ guess }}</span></div>
       </div>
       <div id="picker">
         <div class="number" v-on:click="checkAnswer(0)">0</div>
@@ -130,6 +129,7 @@
         color: "#fff",
         wrong: 0,
         right: 0,
+        guess: "",
       },
       created() {
         this.generateNewEquation();
@@ -157,16 +157,22 @@
         },
         checkAnswer: function (value) {
           var that = this;
-          if (this.answer == value) {
+          this.guess += value.toString();
+          if (this.answer == parseInt(this.guess, 10)) {
             this.right++;
+
             this.revealed = true;
             this.color = "#28a745";
             setTimeout(function () {
+              that.guess = "";
               that.generateNewEquation();
             }, 1000);
-          } else {
+          } else if (this.answer.toString().length == this.guess.length) {
             this.wrong++;
             this.color = "#dc3545";
+            setTimeout(function () {
+              that.guess = "";
+            }, 1000);
           }
 
           setTimeout(function () {
@@ -181,6 +187,9 @@
           }
 
           this.generateNewEquation();
+        },
+        clearAnswer: function () {
+          this.guess = "";
         },
         incrementMainVal: function () {
           this.main++;
