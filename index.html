@@ -166,18 +166,16 @@
             setTimeout(function () {
               that.guess = "";
               that.generateNewEquation();
+              that.color = "#fff";
             }, 1000);
           } else if (this.answer.toString().length == this.guess.length) {
             this.wrong++;
             this.color = "#dc3545";
             setTimeout(function () {
               that.guess = "";
+              that.color = "#fff";
             }, 1000);
           }
-
-          setTimeout(function () {
-            that.color = "#fff";
-          }, 1000);
         },
         changeOperator: function () {
           if (this.operator == "+") {
